@@ -7,7 +7,8 @@ function createGallery(array) {
       acc +
       `<a class="gallery__item" href="${item.original}">
   <img class="gallery__image" src="${item.preview}" alt="${item.description}" />
-</a>`
+</a>`,
+    ""
   );
 }
 const result = createGallery(galleryItems);
