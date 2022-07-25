@@ -25,27 +25,28 @@ list.insertAdjacentHTML("beforeend", result);
 
 function clickedItem(event) {
   event.preventDefault();
-  const instance = basicLightbox.create(
+  if (!event.target.classList.contains("gallery__image")) {
+    return;
+  }
+  const modal = basicLightbox.create(
     `<img src="${event.target.dataset.source}" width="800" height="600">`,
     {
-      onShow: (instance) => {
-        document.onkeydown = function (evt) {
-          evt = evt || window.event;
-          var isEscape = false;
-          if ("key" in evt) {
-            isEscape = evt.key === "Escape" || evt.key === "Esc";
-          } else {
-            isEscape = evt.keyCode === 27;
-          }
-          if (isEscape) {
-            instance.close();
-          }
-        };
+      onShow: () => {
+        window.addEventListener("keydown", handleCloseByEscape);
+      },
+      onClose: () => {
+        window.removeEventListener("keydown", handleCloseByEscape);
       },
     }
   );
 
-  instance.show();
+  function handleCloseByEscape(event) {
+    if (event.code === "Escape") {
+      modal.close();
+    }
+  }
+
+  modal.show();
 }
 
 list.addEventListener("click", clickedItem);
